@@ -1,11 +1,9 @@
 function GameBoard() {
-    const rows = 3;
-    const columns = 3;
     const board = [];
 
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i <= 2; i++) {
         board[i] = [];
-        for (let j = 0; j < columns; j++) {
+        for (let j = 0; j <= 2; j++) {
             board[i].push(Cell());
         }
     }
@@ -17,20 +15,10 @@ function GameBoard() {
 
         if (choice === 0) { 
             board[rowIndex][columnIndex].getChoice(player); // when have an empty cell, it can be filled
-            /*
-            // add logic so that when all the cells are populated, the game will be finished. 
-            const availableCells = board.filter((row) => {
-                return row[columnIndex].getValue() === 0;
-            }); 
-            if (!availableCells.length) {
-                console.log('Game over!')
-                return;
-            }
-            */
         } else {
             console.log(`That cell is chosen already. Make another choice.`)
-            game.switchPlayerTurn();
-            return; // If the cell doesn't make it through the filter, the move is invalid. Stops execution.
+            game.switchPlayerTurn(); // No execution, gives the player another chance. Otherwise they'll miss a turn.
+            return; 
         }
     };
 
@@ -116,6 +104,23 @@ function GameController(
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
                     return;
                 }
+            }
+
+            // checking a tie. When all the cells are populated and there hasn't been a winner, the game will be finished with a tie. 
+            let isTie = true;
+            for (let i = 0; i <= 2; i++) {
+                for (let j = 0; j <= 2; j++) {
+                    if (board.getBoard()[i][j].getValue() === 0) {
+                        isTie = false;
+                        break; // exit the inner loop if `0` is found
+                    } 
+                }
+                if (!isTie) break; // exit the outer loop if a `0` is found
+            }
+
+            if (isTie) {
+                console.log(`It's a tie!`);
+                return;
             }
 
             switchPlayerTurn();
