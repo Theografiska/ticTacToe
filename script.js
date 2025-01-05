@@ -13,14 +13,25 @@ function GameBoard() {
     const getBoard = () => board;
 
     const makeChoice = (rowIndex, columnIndex, player) => {
-        const availableCells = board.filter((row) => row[columnIndex].getValue() === 0).map(row => row[columnIndex]);
+        let choice = board[rowIndex][columnIndex].getValue();
 
-        // If no cells make it through the filter, 
-        // the move is invalid. Stop execution.
-        if (!availableCells.length) return;
-
-        // Otherwise, I have a valid cell
-        board[rowIndex][columnIndex].getChoice(player);
+        if (choice === 0) { 
+            board[rowIndex][columnIndex].getChoice(player); // when have an empty cell, it can be filled
+            /*
+            // add logic so that when all the cells are populated, the game will be finished. 
+            const availableCells = board.filter((row) => {
+                return row[columnIndex].getValue() === 0;
+            }); 
+            if (!availableCells.length) {
+                console.log('Game over!')
+                return;
+            }
+            */
+        } else {
+            console.log(`That cell is chosen already. Make another choice.`)
+            game.switchPlayerTurn();
+            return; // If the cell doesn't make it through the filter, the move is invalid. Stops execution.
+        }
     };
 
     const printBoard = () => {
@@ -34,8 +45,8 @@ function GameBoard() {
 /*
 ** A Cell represents one "square" on the board and can have one of
 ** 0: no token is in the square,
-** 1: Player One's token,
-** 2: Player 2's token
+** "X": Player One's token,
+** "O": Player 2's token
 */
 
 function Cell() {
@@ -43,7 +54,7 @@ function Cell() {
 
     // accept a player's input:
     const getChoice = (player) => {
-        value = player;
+        value = player; // getActivePlayer().token goes here
     };
 
     // retrieve the value through closure
@@ -60,15 +71,15 @@ function Player(name, token) {
     this.token = token;
 }
 
-function displayController(
+function GameController(
     playerOneName = "Player One",
     playerTwoName = "Player Two"
 ) {
         const board = GameBoard();
 
         const players = [
-            new Player(playerOneName, 1),
-            new Player(playerTwoName, 2)
+            new Player(playerOneName, "X"),
+            new Player(playerTwoName, "O")
         ];
 
         let activePlayer = players[0];
@@ -83,8 +94,41 @@ function displayController(
             console.log(`${getActivePlayer().name}'s turn.`);
         };
 
-        
-};
+        const playRound = (rowIndex, columnIndex) => {
+            console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`);
+            board.makeChoice(rowIndex, columnIndex, getActivePlayer().token);
 
+            // checking winner here
+            for (i=0; i<=2; i++) {
+                // logic to check whether a player has taken some row
+                if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
+                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    return;
+                } 
+                // logic to check whether a player has taken some column
+                else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
+                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    return;
+                } 
+                // logic to check whether a player has taken some diagonal
+                else if (board.getBoard()[0][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[2][2].getValue() === getActivePlayer().token 
+                || board.getBoard()[2][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[0][2].getValue() === getActivePlayer().token) {
+                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    return;
+                }
+            }
 
-const game = displayController();
+            switchPlayerTurn();
+            printNewRound();
+        };
+
+        printNewRound(); // initial play game message
+
+        return {
+            playRound,
+            getActivePlayer,
+            switchPlayerTurn
+        };
+}
+
+const game = GameController("Theo", "Britten");
