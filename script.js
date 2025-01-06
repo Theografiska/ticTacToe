@@ -14,7 +14,7 @@ function GameBoard() {
         let choice = board[rowIndex][columnIndex].getValue();
 
         if (choice === 0) { 
-            board[rowIndex][columnIndex].getChoice(player); // when have an empty cell, it can be filled
+            board[rowIndex][columnIndex].getChoice(player); // only an empty cell can be filled
         } else {
             console.log(`That cell is chosen already. Make another choice.`)
             game.switchPlayerTurn(); // No execution, gives the player another chance. Otherwise they'll miss a turn.
@@ -89,18 +89,32 @@ function GameController(
             // checking winner here
             for (i=0; i<=2; i++) {
                 // logic to check whether a player has taken some row
-                if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
+                if (
+                    board.getBoard()[i][0].getValue() === getActivePlayer().token && 
+                    board.getBoard()[i][1].getValue() === getActivePlayer().token && 
+                    board.getBoard()[i][2].getValue() === getActivePlayer().token
+                ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
                     return;
                 } 
                 // logic to check whether a player has taken some column
-                else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
+                else if (
+                    board.getBoard()[0][i].getValue() === getActivePlayer().token && 
+                    board.getBoard()[1][i].getValue() === getActivePlayer().token && 
+                    board.getBoard()[2][i].getValue() === getActivePlayer().token
+                ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
-                else if (board.getBoard()[0][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[2][2].getValue() === getActivePlayer().token 
-                || board.getBoard()[2][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[0][2].getValue() === getActivePlayer().token) {
+                else if (
+                    board.getBoard()[0][0].getValue() === getActivePlayer().token && 
+                    board.getBoard()[1][1].getValue() === getActivePlayer().token && 
+                    board.getBoard()[2][2].getValue() === getActivePlayer().token || 
+                    board.getBoard()[2][0].getValue() === getActivePlayer().token && 
+                    board.getBoard()[1][1].getValue() === getActivePlayer().token && 
+                    board.getBoard()[0][2].getValue() === getActivePlayer().token
+                ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
                     return;
                 }
@@ -115,7 +129,7 @@ function GameController(
                         break; // exit the inner loop if `0` is found
                     } 
                 }
-                if (!isTie) break; // exit the outer loop if a `0` is found
+                if (!isTie) break; // exit the outer loop if `0` is found
             }
 
             if (isTie) {
