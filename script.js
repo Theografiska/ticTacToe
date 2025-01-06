@@ -123,14 +123,17 @@ function GameController(
                 // logic to check whether a player has taken some row
                 if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
                     victoryMessage();
+                    return;
                 } 
                 // logic to check whether a player has taken some column
                 else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
                     victoryMessage();
+                    return;
                 } 
                 // logic to check whether a player has taken some diagonal
                 else if (board.getBoard()[0][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[2][2].getValue() === getActivePlayer().token || board.getBoard()[2][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[0][2].getValue() === getActivePlayer().token) {
                     victoryMessage();
+                    return;
                 }
             }
 
