@@ -16,17 +16,18 @@ function GameBoard() {
         if (choice === "") { 
             board[rowIndex][columnIndex].getChoice(player); // only an empty cell can be filled
         } else {
-            console.log(`That cell is chosen already. Make another choice.`)
-            game.switchPlayerTurn(); // No execution, gives the player another chance. Otherwise they'll miss a turn.
-            return; 
+            return; // No execution, gives the player another chance. Otherwise they'll miss a turn. 
         }
     };
 
     const printBoard = () => {
-        const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()));
+        const boardWithCellValues = board.map((row) => {
+            return row.map((cell) => {
+                return cell.getValue();
+            });
+        });
         console.log(boardWithCellValues);
     }
-
 
     return { getBoard, makeChoice, printBoard };
 };
@@ -71,6 +72,7 @@ function GameController(
         const switchPlayerTurn = () => {
             activePlayer = activePlayer === players[0] ? players[1] : players[0];
         };
+
         const getActivePlayer = () => activePlayer;
 
         const gameTurn = document.querySelector("#game-turns-container");
@@ -81,9 +83,24 @@ function GameController(
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
+        const restartBtn = document.querySelector("#restart-btn");
+        restartBtn.addEventListener("click", () => {
+            restartBtn.style.display = "none";
+            // restart everything
+        })
+
         const playRound = (rowIndex, columnIndex) => {
             console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`);
             board.makeChoice(rowIndex, columnIndex, getActivePlayer().token);
+
+            const victoryMessage = () => {
+                console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    restartBtn.style.display = "block";
+                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                    gameTurn.style.backgroundColor = "lightblue";
+                    gameTurn.style.color = "white";
+                    gameIsActive = false;
+            }
 
             // checking winner here
             for (i=0; i<=2; i++) {
@@ -93,12 +110,7 @@ function GameController(
                     board.getBoard()[i][1].getValue() === getActivePlayer().token && 
                     board.getBoard()[i][2].getValue() === getActivePlayer().token
                 ) {
-                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
-                    restartBtn.style.display = "block";
-                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                    gameTurn.style.backgroundColor = "green";
-                    gameTurn.style.color = "white";
-                    gameIsActive = false;
+                    victoryMessage();
                     return;
                 } 
                 // logic to check whether a player has taken some column
@@ -107,12 +119,7 @@ function GameController(
                     board.getBoard()[1][i].getValue() === getActivePlayer().token && 
                     board.getBoard()[2][i].getValue() === getActivePlayer().token
                 ) {
-                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
-                    restartBtn.style.display = "block";
-                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                    gameTurn.style.backgroundColor = "green";
-                    gameTurn.style.color = "white";
-                    gameIsActive = false;
+                    victoryMessage();
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
@@ -124,12 +131,7 @@ function GameController(
                     board.getBoard()[1][1].getValue() === getActivePlayer().token && 
                     board.getBoard()[0][2].getValue() === getActivePlayer().token
                 ) {
-                    console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
-                    restartBtn.style.display = "block";
-                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                    gameTurn.style.backgroundColor = "green";
-                    gameTurn.style.color = "white";
-                    gameIsActive = false;
+                    victoryMessage();
                     return;
                 }
             }
@@ -283,12 +285,7 @@ function DisplayGame() {
 
 let gameIsActive = false;
 
-let playerOneName = prompt("First player name");
-let playerTwoName = prompt("Second player name");
+let playerOneName = prompt("First player name", "Player 1");
+let playerTwoName = prompt("Second player name", "Player 2");
 
 const game = GameController(playerOneName, playerTwoName);
-
-const restartBtn = document.querySelector("#restart-btn");
-restartBtn.addEventListener("click", () => {
-    // restart everything
-})
