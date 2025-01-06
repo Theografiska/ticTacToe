@@ -150,4 +150,84 @@ function GameController(
         };
 }
 
-const game = GameController("Theo", "Britten");
+function DisplayGame() {
+    const board = GameBoard();
+
+    const startBtn = document.querySelector("#start-btn");
+    startBtn.addEventListener("click", () => {
+        // getting players' names
+        const playerOneName = document.querySelector("#player-one-name");
+        playerOneName.textContent = prompt("Please enter player 1 name") + ": X";
+
+        const playerTwoName = document.querySelector("#player-two-name");
+        playerTwoName.textContent = prompt("Please enter player 2 name") + ": O";
+
+        const players = [
+            new Player(playerOneName, "X"),
+            new Player(playerTwoName, "O")
+        ];
+    
+        let activePlayer = players[0];
+    
+        const switchPlayerTurn = () => {
+            activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        };
+    
+        const getActivePlayer = () => activePlayer;
+
+        // rendering the board 
+        const printNewRound = () => {
+            board.printBoard();
+            console.log(`${getActivePlayer().name}'s turn.`);
+        };
+
+        printNewRound();
+
+        // first row
+        const cellOne = document.querySelector("#zero-zero");
+        cellOne.textContent = board.getBoard()[0][0].getValue();
+
+        const cellTwo = document.querySelector("#zero-one");
+        cellTwo.textContent = board.getBoard()[0][1].getValue();
+
+        const cellThree = document.querySelector("#zero-two");
+        cellThree.textContent = board.getBoard()[0][2].getValue();
+
+        // second row
+        const cellFour = document.querySelector("#one-zero");
+        cellFour.textContent = board.getBoard()[1][0].getValue();
+
+        const cellFive = document.querySelector("#one-one");
+        cellFive.textContent = board.getBoard()[1][1].getValue();
+
+        const cellSix = document.querySelector("#one-two");
+        cellSix.textContent = board.getBoard()[1][2].getValue();
+
+        // third row
+        const cellSeven = document.querySelector("#two-zero");
+        cellSeven.textContent = board.getBoard()[2][0].getValue();
+
+        const cellEight = document.querySelector("#two-one");
+        cellEight.textContent = board.getBoard()[2][1].getValue();
+
+        const cellNine = document.querySelector("#two-two");
+        cellNine.textContent = board.getBoard()[2][2].getValue();
+
+        const cells = document.getElementsByClassName("cell");
+        cells.forEach(cell => {
+            addEventListener("click", () => {
+                let choice = getChoice();
+                cell.textContent = choice;
+            })
+        });
+
+        // starting the game
+        const game = GameController(playerOneName, playerTwoName);
+
+        const gameTurn = document.querySelector("#game-turns-container");
+
+
+    })
+}
+
+const start = DisplayGame();

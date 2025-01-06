@@ -24,12 +24,36 @@ header {
     color: white;
 }
 
+button {
+    cursor: pointer;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#start-btn {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: 2rem;
+}
+
+#names-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    margin-bottom: 1rem;
+}
 
 #grid-container {
     background-color: white;
     border-radius: 1rem;
 }
-
 
 .row {
     display: flex;
@@ -48,4 +72,7 @@ header {
 .cell {
     width: 125px;
     height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
