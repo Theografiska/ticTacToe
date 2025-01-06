@@ -113,6 +113,7 @@ p {
     font-weight: 100;
     color: lightblue;
     font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
 }
 
 footer {
