@@ -183,7 +183,7 @@ function DisplayGame() {
         const infoContainer = document.querySelector("#info-container");
         infoContainer.style.display = "flex";
 });
-    // getting players' names
+    // rendering players' names
     let firstPlayer = document.querySelector("#player-one-name");
     firstPlayer.textContent = playerOneName + ": X";
 
@@ -194,90 +194,19 @@ function DisplayGame() {
 
     const RenderBoard = () => {
         const board = GameBoard();
-    
-        // first row
-        const cellOne = document.querySelector("#zero-zero");
-        cellOne.textContent = board.getBoard()[0][0].getValue();
-        cellOne.addEventListener("click", () => {
-            if (cellOne.textContent === "" && gameIsActive) {
-                cellOne.textContent = game.getActivePlayer().token;
-                game.playRound(0,0);
-            }
-            
-        })
-    
-        const cellTwo = document.querySelector("#zero-one");
-        cellTwo.textContent = board.getBoard()[0][1].getValue();
-        cellTwo.addEventListener("click", () => {
-            if (cellTwo.textContent === "" && gameIsActive) {
-                cellTwo.textContent = game.getActivePlayer().token;
-                game.playRound(0,1);
-            }
-        })
-    
-        const cellThree = document.querySelector("#zero-two");
-        cellThree.textContent = board.getBoard()[0][2].getValue();
-        cellThree.addEventListener("click", () => {
-            if (cellThree.textContent === "" && gameIsActive) {
-                cellThree.textContent = game.getActivePlayer().token;
-                game.playRound(0,2);
-            }
-        })
-    
-        // second row
-        const cellFour = document.querySelector("#one-zero");
-        cellFour.textContent = board.getBoard()[1][0].getValue();
-        cellFour.addEventListener("click", () => {
-            if (cellFour.textContent === "" && gameIsActive) {
-                cellFour.textContent = game.getActivePlayer().token;
-                game.playRound(1,0);
-            }
-        })
-    
-        const cellFive = document.querySelector("#one-one");
-        cellFive.textContent = board.getBoard()[1][1].getValue();
-        cellFive.addEventListener("click", () => {
-            if (cellFive.textContent === "" && gameIsActive) {
-                cellFive.textContent = game.getActivePlayer().token;
-                game.playRound(1,1);
-            }
-        })
-    
-        const cellSix = document.querySelector("#one-two");
-        cellSix.textContent = board.getBoard()[1][2].getValue();
-        cellSix.addEventListener("click", () => {
-            if (cellSix.textContent === "" && gameIsActive) {
-                cellSix.textContent = game.getActivePlayer().token;
-                game.playRound(1,2);
-            }
-        })
-    
-        // third row
-        const cellSeven = document.querySelector("#two-zero");
-        cellSeven.textContent = board.getBoard()[2][0].getValue();
-        cellSeven.addEventListener("click", () => {
-            if (cellSeven.textContent === "" && gameIsActive) {
-                cellSeven.textContent = game.getActivePlayer().token;
-                game.playRound(2,0);
-            }
-        })
-    
-        const cellEight = document.querySelector("#two-one");
-        cellEight.textContent = board.getBoard()[2][1].getValue();
-        cellEight.addEventListener("click", () => {
-            if (cellEight.textContent === "" && gameIsActive) {
-                cellEight.textContent = game.getActivePlayer().token;
-                game.playRound(2,1);
-            }
-        })
-    
-        const cellNine = document.querySelector("#two-two");
-        cellNine.textContent = board.getBoard()[2][2].getValue();
-        cellNine.addEventListener("click", () => {
-            if (cellNine.textContent === "" && gameIsActive) {
-                cellNine.textContent = game.getActivePlayer().token;
-                game.playRound(2,2);
-            }
+
+        const allCells = document.querySelectorAll(".cell");
+        allCells.forEach((cell) => {
+            let cellId = cell.id;
+            let rowIndex = Number(cellId.split("-")[0]);
+            let columnIndex = Number(cellId.split("-")[1]);
+            cell.textContent = board.getBoard()[rowIndex][columnIndex].getValue();
+            cell.addEventListener("click", () => {
+                if (cell.textContent === "" && gameIsActive) {
+                    cell.textContent = game.getActivePlayer().token;
+                    game.playRound(rowIndex,columnIndex);
+                }
+            })
         })
     }
     RenderBoard();
