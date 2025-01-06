@@ -9,23 +9,12 @@
 <body>
     <header>
         <h1>Tic-Tac-Toe</h1>
-        <button id="start-btn">Start game</button>
-        <button id="restart-btn">Restart game</button>
+        <button id="restart-btn">Restart game</button>        
     </header>
     <main>
         <div id="game-container">
-            <div id="top-main-section">
-                <div id="info-container">
-                    <div id="names-container">
-                        <p class="name-and-marker" id="player-one-name"></p>
-                        <p class="name-and-marker" id="player-two-name"></p>
-                    </div>
-                    <div>
-                        <p id="game-turns-container"></p>
-                    </div>
-                </div>
-            </div>
-            <div id="grid-container">
+            <p class="hidden name" id="player-one-name"></p>
+            <div id="tictactoe-container">
                 <div class="row">
                     <div class="cell" id="0-0"></div>
                     <div class="cell" id="0-1"></div>
@@ -42,10 +31,16 @@
                     <div class="cell" id="2-2"></div>
                 </div>
             </div>
+            <p class="hidden name" id="player-two-name"></p>
         </div>
         
+        <div class="hidden" id="game-display">
+        </div>
+        <button id="start-btn">Start game</button>
     </main>
-    <footer></footer>
+    <footer>
+        <p>Theodor Kaljo 2025</p>
+    </footer>
     
     <script src="script.js"></script>
 </body>

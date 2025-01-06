@@ -25,7 +25,7 @@ function GameBoard() {
         if (choice === "") { 
             board[rowIndex][columnIndex].getChoice(player); // only an empty cell can be filled
         } else {
-            return; // No execution, gives the player another chance. Otherwise they'll miss a turn. 
+            return; 
         }
     };
 
@@ -84,11 +84,12 @@ function GameController(
 
         const getActivePlayer = () => activePlayer;
 
-        const gameTurn = document.querySelector("#game-turns-container");
+        const gameDisplay = document.querySelector("#game-display");
 
         const printNewRound = () => {
             board.printBoard();
-            gameTurn.textContent = `${getActivePlayer().name}'s turn.`;
+            gameIsActive = true;
+            gameDisplay.textContent = `${getActivePlayer().name}'s turn.`;
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
@@ -99,8 +100,8 @@ function GameController(
             board.getBoard();
             printNewRound();
             DisplayGame();
-            gameIsActive = true;
-            gameTurn.style.backgroundColor = "black";
+            gameDisplay.style.backgroundColor = "black";
+            gameDisplay.style.color = "white";
             restartBtn.style.display = "none";
         })
 
@@ -111,44 +112,25 @@ function GameController(
             const victoryMessage = () => {
                 console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
                     restartBtn.style.display = "block";
-                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                    gameTurn.style.backgroundColor = "lightblue";
-                    gameTurn.style.color = "white";
+                    gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                    gameDisplay.style.backgroundColor = "gold";
+                    gameDisplay.style.color = "black";
                     gameIsActive = false;
             }
 
-            // checking winner here
-            for (i=0; i<=2; i++) {
+            // checking winner
+            for (i = 0; i <= 2; i++) {
                 // logic to check whether a player has taken some row
-                if (
-                    board.getBoard()[i][0].getValue() === getActivePlayer().token && 
-                    board.getBoard()[i][1].getValue() === getActivePlayer().token && 
-                    board.getBoard()[i][2].getValue() === getActivePlayer().token
-                ) {
+                if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
                     victoryMessage();
-                    return;
                 } 
                 // logic to check whether a player has taken some column
-                else if (
-                    board.getBoard()[0][i].getValue() === getActivePlayer().token && 
-                    board.getBoard()[1][i].getValue() === getActivePlayer().token && 
-                    board.getBoard()[2][i].getValue() === getActivePlayer().token
-                ) {
+                else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
                     victoryMessage();
-                    return;
                 } 
                 // logic to check whether a player has taken some diagonal
-                else if (
-                    board.getBoard()[0][0].getValue() === getActivePlayer().token && 
-                    board.getBoard()[1][1].getValue() === getActivePlayer().token && 
-                    board.getBoard()[2][2].getValue() === getActivePlayer().token 
-                    || 
-                    board.getBoard()[2][0].getValue() === getActivePlayer().token && 
-                    board.getBoard()[1][1].getValue() === getActivePlayer().token && 
-                    board.getBoard()[0][2].getValue() === getActivePlayer().token
-                ) {
+                else if (board.getBoard()[0][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[2][2].getValue() === getActivePlayer().token || board.getBoard()[2][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[0][2].getValue() === getActivePlayer().token) {
                     victoryMessage();
-                    return;
                 }
             }
 
@@ -167,9 +149,9 @@ function GameController(
             if (isTie) {
                 console.log(`It's a tie!`);
                 restartBtn.style.display = "block";
-                gameTurn.textContent = `It's a tie!`;
-                gameTurn.style.backgroundColor = "gray";
-                gameTurn.style.color = "white";
+                gameDisplay.textContent = `It's a tie!`;
+                gameDisplay.style.backgroundColor = "gray";
+                gameDisplay.style.color = "white";
                 gameIsActive = false;
                 return;
             }
@@ -180,7 +162,6 @@ function GameController(
             }
         };
 
-        // printNewRound(); // initial play game message -- moved this to a different place.
         DisplayGame(); // initial game rendering to DOM
         
         return {
@@ -191,16 +172,18 @@ function GameController(
         };
 }
 
-
 function DisplayGame() {
+    // start button kicks off the game
     const startBtn = document.querySelector("#start-btn");
     startBtn.addEventListener("click", () => {
         game.printNewRound();
-        gameIsActive = true;
         startBtn.style.display = "none";
-        const infoContainer = document.querySelector("#info-container");
-        infoContainer.style.display = "flex";
-});
+        const hiddenItems = document.querySelectorAll(".hidden");
+        hiddenItems.forEach((item) => {
+            item.style.display = "block";
+        })
+    });
+
     // rendering players' names
     let firstPlayer = document.querySelector("#player-one-name");
     firstPlayer.textContent = playerOneName + ": X";
