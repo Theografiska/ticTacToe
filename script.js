@@ -10,6 +10,15 @@ function GameBoard() {
 
     const getBoard = () => board;
 
+    const resetBoard = () => {
+        for (let i = 0; i <= 2; i++) {
+            board[i] = [];
+            for (let j = 0; j <= 2; j++) {
+                board[i].push(Cell());
+            }
+        }
+    }
+
     const makeChoice = (rowIndex, columnIndex, player) => {
         let choice = board[rowIndex][columnIndex].getValue();
 
@@ -29,7 +38,7 @@ function GameBoard() {
         console.log(boardWithCellValues);
     }
 
-    return { getBoard, makeChoice, printBoard };
+    return { getBoard, makeChoice, printBoard, resetBoard };
 };
 
 // A Cell represents one "square" on the board and can have one of "": no token is in the square, "X": Player One's token, "O": Player 2's token
@@ -83,10 +92,16 @@ function GameController(
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
+        // reset button functionality
         const restartBtn = document.querySelector("#restart-btn");
         restartBtn.addEventListener("click", () => {
+            board.resetBoard();
+            board.getBoard();
+            printNewRound();
+            DisplayGame();
+            gameIsActive = true;
+            gameTurn.style.backgroundColor = "black";
             restartBtn.style.display = "none";
-            // restart everything
         })
 
         const playRound = (rowIndex, columnIndex) => {
@@ -126,7 +141,8 @@ function GameController(
                 else if (
                     board.getBoard()[0][0].getValue() === getActivePlayer().token && 
                     board.getBoard()[1][1].getValue() === getActivePlayer().token && 
-                    board.getBoard()[2][2].getValue() === getActivePlayer().token || 
+                    board.getBoard()[2][2].getValue() === getActivePlayer().token 
+                    || 
                     board.getBoard()[2][0].getValue() === getActivePlayer().token && 
                     board.getBoard()[1][1].getValue() === getActivePlayer().token && 
                     board.getBoard()[0][2].getValue() === getActivePlayer().token
@@ -164,13 +180,14 @@ function GameController(
             }
         };
 
-        printNewRound(); // initial play game message
+        // printNewRound(); // initial play game message -- moved this to a different place.
         DisplayGame(); // initial game rendering to DOM
         
         return {
             playRound,
             getActivePlayer,
             switchPlayerTurn,
+            printNewRound
         };
 }
 
@@ -178,6 +195,7 @@ function GameController(
 function DisplayGame() {
     const startBtn = document.querySelector("#start-btn");
     startBtn.addEventListener("click", () => {
+        game.printNewRound();
         gameIsActive = true;
         startBtn.style.display = "none";
         const infoContainer = document.querySelector("#info-container");
@@ -214,7 +232,4 @@ function DisplayGame() {
 
 let gameIsActive = false;
 
-let playerOneName = prompt("First player name", "Player 1");
-let playerTwoName = prompt("Second player name", "Player 2");
-
-const game = GameController(playerOneName, playerTwoName);
+const game = GameController(playerOneName = prompt("First player name", "Player 1"), playerTwoName = prompt("Second player name", "Player 2"));
