@@ -35,7 +35,14 @@ button {
     align-items: center;
 }
 
-#start-btn {
+#info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#restart-btn {
+    display: none;
     padding: .5rem 1rem;
     border-radius: .5rem;
     margin: 2rem 0;
@@ -43,11 +50,19 @@ button {
 
 #names-container {
     display: flex;
-    flex-direction: column;
+    gap: 8rem;
+    font-size: 1.25rem;
 }
 
 p {
     margin-bottom: 1rem;
+}
+
+
+#game-turns-container {
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: .5rem;
 }
 
 #grid-container {
@@ -75,4 +90,5 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 2.5rem;
 }

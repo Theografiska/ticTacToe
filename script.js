@@ -13,7 +13,7 @@ function GameBoard() {
     const makeChoice = (rowIndex, columnIndex, player) => {
         let choice = board[rowIndex][columnIndex].getValue();
 
-        if (choice === 0) { 
+        if (choice === "") { 
             board[rowIndex][columnIndex].getChoice(player); // only an empty cell can be filled
         } else {
             console.log(`That cell is chosen already. Make another choice.`)
@@ -27,55 +27,19 @@ function GameBoard() {
         console.log(boardWithCellValues);
     }
 
-    const RenderBoard = () => {
-        const board = GameBoard();
-    
-        // first row
-        const cellOne = document.querySelector("#zero-zero");
-        cellOne.textContent = board.getBoard()[0][0].getValue();
-        cellOne.addEventListener("click", () => {
-            return board.getBoard()[0][0].makeChoice(0,0,getActivePlayer().token);
-        })
-    
-        const cellTwo = document.querySelector("#zero-one");
-        cellTwo.textContent = board.getBoard()[0][1].getValue();
-    
-        const cellThree = document.querySelector("#zero-two");
-        cellThree.textContent = board.getBoard()[0][2].getValue();
-    
-        // second row
-        const cellFour = document.querySelector("#one-zero");
-        cellFour.textContent = board.getBoard()[1][0].getValue();
-    
-        const cellFive = document.querySelector("#one-one");
-        cellFive.textContent = board.getBoard()[1][1].getValue();
-    
-        const cellSix = document.querySelector("#one-two");
-        cellSix.textContent = board.getBoard()[1][2].getValue();
-    
-        // third row
-        const cellSeven = document.querySelector("#two-zero");
-        cellSeven.textContent = board.getBoard()[2][0].getValue();
-    
-        const cellEight = document.querySelector("#two-one");
-        cellEight.textContent = board.getBoard()[2][1].getValue();
-    
-        const cellNine = document.querySelector("#two-two");
-        cellNine.textContent = board.getBoard()[2][2].getValue();
-    }
 
-    return { getBoard, makeChoice, printBoard, RenderBoard };
+    return { getBoard, makeChoice, printBoard };
 };
 
 /*
 ** A Cell represents one "square" on the board and can have one of
-** 0: no token is in the square,
+** "": no token is in the square,
 ** "X": Player One's token,
 ** "O": Player 2's token
 */
 
 function Cell() {
-    let value = 0;
+    let value = "";
 
     // accept a player's input:
     const getChoice = (player) => {
@@ -97,8 +61,8 @@ function Player(name, token) {
 }
 
 function GameController(
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
+    playerOneName,
+    playerTwoName
 ) {
         const board = GameBoard();
 
@@ -114,9 +78,10 @@ function GameController(
         };
         const getActivePlayer = () => activePlayer;
 
+        const gameTurn = document.querySelector("#game-turns-container");
+
         const printNewRound = () => {
             board.printBoard();
-            const gameTurn = document.querySelector("#game-turns-container");
             gameTurn.textContent = `${getActivePlayer().name}'s turn.`;
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
@@ -134,6 +99,9 @@ function GameController(
                     board.getBoard()[i][2].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                    gameTurn.style.backgroundColor = "green";
+                    gameTurn.style.color = "white";
                     return;
                 } 
                 // logic to check whether a player has taken some column
@@ -143,6 +111,9 @@ function GameController(
                     board.getBoard()[2][i].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                    gameTurn.style.backgroundColor = "green";
+                    gameTurn.style.color = "white";
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
@@ -155,6 +126,9 @@ function GameController(
                     board.getBoard()[0][2].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                    gameTurn.style.backgroundColor = "green";
+                    gameTurn.style.color = "white";
                     return;
                 }
             }
@@ -163,16 +137,19 @@ function GameController(
             let isTie = true;
             for (let i = 0; i <= 2; i++) {
                 for (let j = 0; j <= 2; j++) {
-                    if (board.getBoard()[i][j].getValue() === 0) {
+                    if (board.getBoard()[i][j].getValue() === "") {
                         isTie = false;
-                        break; // exit the inner loop if `0` is found
+                        break; // exit the inner loop if "" is found
                     } 
                 }
-                if (!isTie) break; // exit the outer loop if `0` is found
+                if (!isTie) break; // exit the outer loop if "" is found
             }
 
             if (isTie) {
                 console.log(`It's a tie!`);
+                gameTurn.textContent = `It's a tie!`;
+                gameTurn.style.backgroundColor = "gray";
+                gameTurn.style.color = "white";
                 return;
             }
 
@@ -181,6 +158,7 @@ function GameController(
         };
 
         printNewRound(); // initial play game message
+        DisplayGame(); // initial game rendering to DOM
         
         return {
             playRound,
@@ -191,26 +169,111 @@ function GameController(
 
 
 function DisplayGame() {
+    // getting players' names
+    let firstPlayer = document.querySelector("#player-one-name");
+    firstPlayer.textContent = playerOneName + ": X";
+
+    let secondPlayer = document.querySelector("#player-two-name");
+    secondPlayer.textContent = playerTwoName + ": O";
+
     const board = GameBoard();
-    board.RenderBoard();
 
-    const startBtn = document.querySelector("#start-btn");
-    startBtn.addEventListener("click", () => {
-        // getting players' names
-        let firstPlayer = document.querySelector("#player-one-name");
-        playerOneName = prompt("Please enter player 1 name");
-        firstPlayer.textContent = playerOneName + ": X";
-
-        let secondPlayer = document.querySelector("#player-two-name");
-        playerTwoName = prompt("Please enter player 2 name");
-        secondPlayer.textContent = playerTwoName + ": O";
-
-        const game = GameController(playerOneName, playerTwoName);
-
-        game.getActivePlayer();
-
-
-    })
+    const RenderBoard = () => {
+        const board = GameBoard();
+    
+        // first row
+        const cellOne = document.querySelector("#zero-zero");
+        cellOne.textContent = board.getBoard()[0][0].getValue();
+        cellOne.addEventListener("click", () => {
+            if (cellOne.textContent === "") {
+                cellOne.textContent = game.getActivePlayer().token;
+            game.playRound(0,0);
+            }
+            
+        })
+    
+        const cellTwo = document.querySelector("#zero-one");
+        cellTwo.textContent = board.getBoard()[0][1].getValue();
+        cellTwo.addEventListener("click", () => {
+            if (cellTwo.textContent === "") {
+            cellTwo.textContent = game.getActivePlayer().token;
+            game.playRound(0,1);
+            }
+        })
+    
+        const cellThree = document.querySelector("#zero-two");
+        cellThree.textContent = board.getBoard()[0][2].getValue();
+        cellThree.addEventListener("click", () => {
+            if (cellThree.textContent === "") {
+                cellThree.textContent = game.getActivePlayer().token;
+                game.playRound(0,2);
+            }
+        })
+    
+        // second row
+        const cellFour = document.querySelector("#one-zero");
+        cellFour.textContent = board.getBoard()[1][0].getValue();
+        cellFour.addEventListener("click", () => {
+            if (cellFour.textContent === "") {
+                cellFour.textContent = game.getActivePlayer().token;
+            game.playRound(1,0);
+            }
+        })
+    
+        const cellFive = document.querySelector("#one-one");
+        cellFive.textContent = board.getBoard()[1][1].getValue();
+        cellFive.addEventListener("click", () => {
+            if (cellFive.textContent === "") {
+                cellFive.textContent = game.getActivePlayer().token;
+            game.playRound(1,1);
+            }
+        })
+    
+        const cellSix = document.querySelector("#one-two");
+        cellSix.textContent = board.getBoard()[1][2].getValue();
+        cellSix.addEventListener("click", () => {
+            if (cellSix.textContent === "") {
+                cellSix.textContent = game.getActivePlayer().token;
+            game.playRound(1,2);
+            }
+        })
+    
+        // third row
+        const cellSeven = document.querySelector("#two-zero");
+        cellSeven.textContent = board.getBoard()[2][0].getValue();
+        cellSeven.addEventListener("click", () => {
+            if (cellSeven.textContent === "") {
+                cellSeven.textContent = game.getActivePlayer().token;
+            game.playRound(2,0);
+            }
+        })
+    
+        const cellEight = document.querySelector("#two-one");
+        cellEight.textContent = board.getBoard()[2][1].getValue();
+        cellEight.addEventListener("click", () => {
+            if (cellEight.textContent === "") {
+                cellEight.textContent = game.getActivePlayer().token;
+            game.playRound(2,1);
+            }
+        })
+    
+        const cellNine = document.querySelector("#two-two");
+        cellNine.textContent = board.getBoard()[2][2].getValue();
+        cellNine.addEventListener("click", () => {
+            if (cellNine.textContent === "") {
+                cellNine.textContent = game.getActivePlayer().token;
+            game.playRound(2,2);
+            }
+        })
+    }
+    RenderBoard();
 }
 
-const start = DisplayGame();
+let playerOneName = prompt("First player name");
+let playerTwoName = prompt("Second player name");
+
+const game = GameController(playerOneName, playerTwoName);
+
+const restartBtn = document.querySelector("#restart-btn");
+restartBtn.addEventListener("click", () => {
+});
