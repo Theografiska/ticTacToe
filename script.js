@@ -94,10 +94,11 @@ function GameController(
                     board.getBoard()[i][2].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    restartBtn.style.display = "block";
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
-                    gameOver = true;
+                    gameIsActive = false;
                     return;
                 } 
                 // logic to check whether a player has taken some column
@@ -107,10 +108,11 @@ function GameController(
                     board.getBoard()[2][i].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    restartBtn.style.display = "block";
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
-                    gameOver = true;
+                    gameIsActive = false;
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
@@ -123,10 +125,11 @@ function GameController(
                     board.getBoard()[0][2].getValue() === getActivePlayer().token
                 ) {
                     console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                    restartBtn.style.display = "block";
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
-                    gameOver = true;
+                    gameIsActive = false;
                     return;
                 }
             }
@@ -145,14 +148,15 @@ function GameController(
 
             if (isTie) {
                 console.log(`It's a tie!`);
+                restartBtn.style.display = "block";
                 gameTurn.textContent = `It's a tie!`;
                 gameTurn.style.backgroundColor = "gray";
                 gameTurn.style.color = "white";
-                gameOver = true;
+                gameIsActive = false;
                 return;
             }
 
-            if (!gameOver) {
+            if (gameIsActive) {
                 switchPlayerTurn();
                 printNewRound();
             }
@@ -170,6 +174,13 @@ function GameController(
 
 
 function DisplayGame() {
+    const startBtn = document.querySelector("#start-btn");
+    startBtn.addEventListener("click", () => {
+        gameIsActive = true;
+        startBtn.style.display = "none";
+        const infoContainer = document.querySelector("#info-container");
+        infoContainer.style.display = "flex";
+});
     // getting players' names
     let firstPlayer = document.querySelector("#player-one-name");
     firstPlayer.textContent = playerOneName + ": X";
@@ -186,7 +197,7 @@ function DisplayGame() {
         const cellOne = document.querySelector("#zero-zero");
         cellOne.textContent = board.getBoard()[0][0].getValue();
         cellOne.addEventListener("click", () => {
-            if (cellOne.textContent === "" && !gameOver) {
+            if (cellOne.textContent === "" && gameIsActive) {
                 cellOne.textContent = game.getActivePlayer().token;
                 game.playRound(0,0);
             }
@@ -196,7 +207,7 @@ function DisplayGame() {
         const cellTwo = document.querySelector("#zero-one");
         cellTwo.textContent = board.getBoard()[0][1].getValue();
         cellTwo.addEventListener("click", () => {
-            if (cellTwo.textContent === "" && !gameOver) {
+            if (cellTwo.textContent === "" && gameIsActive) {
                 cellTwo.textContent = game.getActivePlayer().token;
                 game.playRound(0,1);
             }
@@ -205,7 +216,7 @@ function DisplayGame() {
         const cellThree = document.querySelector("#zero-two");
         cellThree.textContent = board.getBoard()[0][2].getValue();
         cellThree.addEventListener("click", () => {
-            if (cellThree.textContent === "" && !gameOver) {
+            if (cellThree.textContent === "" && gameIsActive) {
                 cellThree.textContent = game.getActivePlayer().token;
                 game.playRound(0,2);
             }
@@ -215,7 +226,7 @@ function DisplayGame() {
         const cellFour = document.querySelector("#one-zero");
         cellFour.textContent = board.getBoard()[1][0].getValue();
         cellFour.addEventListener("click", () => {
-            if (cellFour.textContent === "" && !gameOver) {
+            if (cellFour.textContent === "" && gameIsActive) {
                 cellFour.textContent = game.getActivePlayer().token;
                 game.playRound(1,0);
             }
@@ -224,7 +235,7 @@ function DisplayGame() {
         const cellFive = document.querySelector("#one-one");
         cellFive.textContent = board.getBoard()[1][1].getValue();
         cellFive.addEventListener("click", () => {
-            if (cellFive.textContent === "" && !gameOver) {
+            if (cellFive.textContent === "" && gameIsActive) {
                 cellFive.textContent = game.getActivePlayer().token;
                 game.playRound(1,1);
             }
@@ -233,7 +244,7 @@ function DisplayGame() {
         const cellSix = document.querySelector("#one-two");
         cellSix.textContent = board.getBoard()[1][2].getValue();
         cellSix.addEventListener("click", () => {
-            if (cellSix.textContent === "" && !gameOver) {
+            if (cellSix.textContent === "" && gameIsActive) {
                 cellSix.textContent = game.getActivePlayer().token;
                 game.playRound(1,2);
             }
@@ -243,7 +254,7 @@ function DisplayGame() {
         const cellSeven = document.querySelector("#two-zero");
         cellSeven.textContent = board.getBoard()[2][0].getValue();
         cellSeven.addEventListener("click", () => {
-            if (cellSeven.textContent === "" && !gameOver) {
+            if (cellSeven.textContent === "" && gameIsActive) {
                 cellSeven.textContent = game.getActivePlayer().token;
                 game.playRound(2,0);
             }
@@ -252,7 +263,7 @@ function DisplayGame() {
         const cellEight = document.querySelector("#two-one");
         cellEight.textContent = board.getBoard()[2][1].getValue();
         cellEight.addEventListener("click", () => {
-            if (cellEight.textContent === "" && !gameOver) {
+            if (cellEight.textContent === "" && gameIsActive) {
                 cellEight.textContent = game.getActivePlayer().token;
                 game.playRound(2,1);
             }
@@ -261,7 +272,7 @@ function DisplayGame() {
         const cellNine = document.querySelector("#two-two");
         cellNine.textContent = board.getBoard()[2][2].getValue();
         cellNine.addEventListener("click", () => {
-            if (cellNine.textContent === "" && !gameOver) {
+            if (cellNine.textContent === "" && gameIsActive) {
                 cellNine.textContent = game.getActivePlayer().token;
                 game.playRound(2,2);
             }
@@ -270,16 +281,14 @@ function DisplayGame() {
     RenderBoard();
 }
 
-let gameOver = false; 
-
+let gameIsActive = false;
 
 let playerOneName = prompt("First player name");
 let playerTwoName = prompt("Second player name");
 
 const game = GameController(playerOneName, playerTwoName);
 
-const startBtn = document.querySelector("#start-btn");
-startBtn.addEventListener("click", () => {
-    const infoContainer = document.querySelector("#info-container");
-    infoContainer.style.display = "flex";
-});
+const restartBtn = document.querySelector("#restart-btn");
+restartBtn.addEventListener("click", () => {
+    // restart everything
+})

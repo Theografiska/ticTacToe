@@ -52,6 +52,14 @@ button {
     padding: .5rem 1rem;
     border-radius: .5rem;
     margin: 2rem 0;
+    display: none;
+}
+
+#start-btn {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    margin: 2rem 0;
+    display: block;
 }
 
 #names-container {
