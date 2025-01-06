@@ -31,12 +31,7 @@ function GameBoard() {
     return { getBoard, makeChoice, printBoard };
 };
 
-/*
-** A Cell represents one "square" on the board and can have one of
-** "": no token is in the square,
-** "X": Player One's token,
-** "O": Player 2's token
-*/
+// A Cell represents one "square" on the board and can have one of "": no token is in the square, "X": Player One's token, "O": Player 2's token
 
 function Cell() {
     let value = "";
@@ -102,6 +97,7 @@ function GameController(
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
+                    gameOver = true;
                     return;
                 } 
                 // logic to check whether a player has taken some column
@@ -114,6 +110,7 @@ function GameController(
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
+                    gameOver = true;
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
@@ -129,6 +126,7 @@ function GameController(
                     gameTurn.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                     gameTurn.style.backgroundColor = "green";
                     gameTurn.style.color = "white";
+                    gameOver = true;
                     return;
                 }
             }
@@ -150,11 +148,14 @@ function GameController(
                 gameTurn.textContent = `It's a tie!`;
                 gameTurn.style.backgroundColor = "gray";
                 gameTurn.style.color = "white";
+                gameOver = true;
                 return;
             }
 
-            switchPlayerTurn();
-            printNewRound();
+            if (!gameOver) {
+                switchPlayerTurn();
+                printNewRound();
+            }
         };
 
         printNewRound(); // initial play game message
@@ -185,9 +186,9 @@ function DisplayGame() {
         const cellOne = document.querySelector("#zero-zero");
         cellOne.textContent = board.getBoard()[0][0].getValue();
         cellOne.addEventListener("click", () => {
-            if (cellOne.textContent === "") {
+            if (cellOne.textContent === "" && !gameOver) {
                 cellOne.textContent = game.getActivePlayer().token;
-            game.playRound(0,0);
+                game.playRound(0,0);
             }
             
         })
@@ -195,16 +196,16 @@ function DisplayGame() {
         const cellTwo = document.querySelector("#zero-one");
         cellTwo.textContent = board.getBoard()[0][1].getValue();
         cellTwo.addEventListener("click", () => {
-            if (cellTwo.textContent === "") {
-            cellTwo.textContent = game.getActivePlayer().token;
-            game.playRound(0,1);
+            if (cellTwo.textContent === "" && !gameOver) {
+                cellTwo.textContent = game.getActivePlayer().token;
+                game.playRound(0,1);
             }
         })
     
         const cellThree = document.querySelector("#zero-two");
         cellThree.textContent = board.getBoard()[0][2].getValue();
         cellThree.addEventListener("click", () => {
-            if (cellThree.textContent === "") {
+            if (cellThree.textContent === "" && !gameOver) {
                 cellThree.textContent = game.getActivePlayer().token;
                 game.playRound(0,2);
             }
@@ -214,27 +215,27 @@ function DisplayGame() {
         const cellFour = document.querySelector("#one-zero");
         cellFour.textContent = board.getBoard()[1][0].getValue();
         cellFour.addEventListener("click", () => {
-            if (cellFour.textContent === "") {
+            if (cellFour.textContent === "" && !gameOver) {
                 cellFour.textContent = game.getActivePlayer().token;
-            game.playRound(1,0);
+                game.playRound(1,0);
             }
         })
     
         const cellFive = document.querySelector("#one-one");
         cellFive.textContent = board.getBoard()[1][1].getValue();
         cellFive.addEventListener("click", () => {
-            if (cellFive.textContent === "") {
+            if (cellFive.textContent === "" && !gameOver) {
                 cellFive.textContent = game.getActivePlayer().token;
-            game.playRound(1,1);
+                game.playRound(1,1);
             }
         })
     
         const cellSix = document.querySelector("#one-two");
         cellSix.textContent = board.getBoard()[1][2].getValue();
         cellSix.addEventListener("click", () => {
-            if (cellSix.textContent === "") {
+            if (cellSix.textContent === "" && !gameOver) {
                 cellSix.textContent = game.getActivePlayer().token;
-            game.playRound(1,2);
+                game.playRound(1,2);
             }
         })
     
@@ -242,38 +243,43 @@ function DisplayGame() {
         const cellSeven = document.querySelector("#two-zero");
         cellSeven.textContent = board.getBoard()[2][0].getValue();
         cellSeven.addEventListener("click", () => {
-            if (cellSeven.textContent === "") {
+            if (cellSeven.textContent === "" && !gameOver) {
                 cellSeven.textContent = game.getActivePlayer().token;
-            game.playRound(2,0);
+                game.playRound(2,0);
             }
         })
     
         const cellEight = document.querySelector("#two-one");
         cellEight.textContent = board.getBoard()[2][1].getValue();
         cellEight.addEventListener("click", () => {
-            if (cellEight.textContent === "") {
+            if (cellEight.textContent === "" && !gameOver) {
                 cellEight.textContent = game.getActivePlayer().token;
-            game.playRound(2,1);
+                game.playRound(2,1);
             }
         })
     
         const cellNine = document.querySelector("#two-two");
         cellNine.textContent = board.getBoard()[2][2].getValue();
         cellNine.addEventListener("click", () => {
-            if (cellNine.textContent === "") {
+            if (cellNine.textContent === "" && !gameOver) {
                 cellNine.textContent = game.getActivePlayer().token;
-            game.playRound(2,2);
+                game.playRound(2,2);
             }
         })
     }
     RenderBoard();
 }
 
+let gameOver = false; 
+
+
 let playerOneName = prompt("First player name");
 let playerTwoName = prompt("Second player name");
 
 const game = GameController(playerOneName, playerTwoName);
 
-const restartBtn = document.querySelector("#restart-btn");
-restartBtn.addEventListener("click", () => {
+const startBtn = document.querySelector("#start-btn");
+startBtn.addEventListener("click", () => {
+    const infoContainer = document.querySelector("#info-container");
+    infoContainer.style.display = "flex";
 });
