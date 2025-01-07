@@ -93,6 +93,12 @@ function GameController(
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
+        const playerOneScoreElement = document.querySelector("#player-one-score");
+        playerOneScoreElement.textContent = `Total score: ${playerOneScore}`;
+
+        const playerTwoScoreElement = document.querySelector("#player-two-score");
+        playerTwoScoreElement.textContent = `Total score: ${playerTwoScore}`;
+
         // reset button functionality
         const restartBtn = document.querySelector("#restart-btn");
         restartBtn.addEventListener("click", () => {
@@ -109,13 +115,21 @@ function GameController(
             console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`);
             board.makeChoice(rowIndex, columnIndex, getActivePlayer().token);
 
+            // victory function (to be used multiple times)
             const victoryMessage = () => {
                 console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
-                    restartBtn.style.display = "block";
-                    gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                    gameDisplay.style.backgroundColor = "gold";
-                    gameDisplay.style.color = "black";
-                    gameIsActive = false;
+                restartBtn.style.display = "block";
+                gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+                gameDisplay.style.backgroundColor = "gold";
+                gameDisplay.style.color = "black";
+                gameIsActive = false;
+                if (getActivePlayer().name === players[0].name) {
+                    playerOneScore ++;
+                    playerOneScoreElement.textContent = `Total score: ${playerOneScore}`;
+                } else {
+                    playerTwoScore ++;
+                    playerTwoScoreElement.textContent = `Total score: ${playerTwoScore}`;
+                }
             }
 
             // checking winner
@@ -123,7 +137,7 @@ function GameController(
                 // logic to check whether a player has taken some row
                 if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
                     victoryMessage();
-                    return;
+                    return; // return important otherwise it will check if it's a tie
                 } 
                 // logic to check whether a player has taken some column
                 else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
@@ -188,17 +202,18 @@ function DisplayGame() {
     });
 
     // rendering players' names
-    let firstPlayer = document.querySelector("#player-one-name");
-    firstPlayer.textContent = playerOneName + ": X";
+    let firstName = document.querySelector("#player-one-name");
+    firstName.textContent = playerOneName + ": X";
 
-    let secondPlayer = document.querySelector("#player-two-name");
-    secondPlayer.textContent = playerTwoName + ": O";
+    let secondName = document.querySelector("#player-two-name");
+    secondName.textContent = playerTwoName + ": O";
 
     const board = GameBoard();
 
     const RenderBoard = () => {
         const board = GameBoard();
 
+        // adding listeners to the cells
         const allCells = document.querySelectorAll(".cell");
         allCells.forEach((cell) => {
             let cellId = cell.id;
@@ -215,6 +230,9 @@ function DisplayGame() {
     }
     RenderBoard();
 }
+
+let playerOneScore = 0;
+let playerTwoScore = 0;
 
 let gameIsActive = false;
 

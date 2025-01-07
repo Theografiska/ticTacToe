@@ -60,11 +60,29 @@ button {
 }
 
 p {
+
+}
+
+.player {
     margin: 1rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .name {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    color: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+#player-one-name {
+    background-color: lightblue;
+}
+#player-two-name {
+    background-color: lightcoral;
 }
 
 #game-display {
@@ -123,4 +141,5 @@ footer {
     background-color: black;
     width: 100vw;
     color: white;
+    padding: 1rem;
 }

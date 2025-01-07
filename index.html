@@ -13,7 +13,10 @@
     </header>
     <main>
         <div id="game-container">
-            <p class="hidden name" id="player-one-name"></p>
+            <div class="player" id="player-one-container">
+                <p id="player-one-name" class="name"></p>
+                <p id="player-one-score" class="score-counter"></p>
+            </div>
             <div id="tictactoe-container">
                 <div class="row">
                     <div class="cell" id="0-0"></div>
@@ -31,7 +34,10 @@
                     <div class="cell" id="2-2"></div>
                 </div>
             </div>
-            <p class="hidden name" id="player-two-name"></p>
+            <div class="player" id="player-two-container">
+                <p id="player-two-name" class="name"></p>
+                <p id="player-two-score" class="score-counter"></p>
+            </div>
         </div>
         
         <div class="hidden" id="game-display">
