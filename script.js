@@ -35,13 +35,11 @@ function GameBoard() {
                 return cell.getValue();
             });
         });
-        console.log(boardWithCellValues);
+        console.log(boardWithCellValues); // can remove later
     }
 
     return { getBoard, makeChoice, printBoard, resetBoard };
 };
-
-// A Cell represents one "square" on the board and can have one of "": no token is in the square, "X": Player One's token, "O": Player 2's token
 
 function Cell() {
     let value = "";
@@ -60,9 +58,10 @@ function Cell() {
     }
 }
 
-function Player(name, token) {
+function Player(name, token, color) {
     this.name = name;
     this.token = token;
+    this.color = color;
 }
 
 function GameController(
@@ -72,8 +71,8 @@ function GameController(
         const board = GameBoard();
 
         const players = [
-            new Player(playerOneName, "X"),
-            new Player(playerTwoName, "O")
+            new Player(playerOneName, "X", "lightblue"),
+            new Player(playerTwoName, "O", "lightcoral")
         ];
 
         let activePlayer = players[0];
@@ -90,6 +89,7 @@ function GameController(
             board.printBoard();
             gameIsActive = true;
             gameDisplay.textContent = `${getActivePlayer().name}'s turn.`;
+            gameDisplay.style.backgroundColor = getActivePlayer().color;
             console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
@@ -106,18 +106,17 @@ function GameController(
             board.getBoard();
             printNewRound();
             DisplayGame();
-            gameDisplay.style.backgroundColor = "black";
             gameDisplay.style.color = "white";
             restartBtn.style.display = "none";
         })
 
         const playRound = (rowIndex, columnIndex) => {
-            console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`);
+            console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`); // can remove later
             board.makeChoice(rowIndex, columnIndex, getActivePlayer().token);
 
             // victory function (to be used multiple times)
             const victoryMessage = () => {
-                console.log(`Congratz, ${getActivePlayer().name}, you have won!`);
+                console.log(`Congratz, ${getActivePlayer().name}, you have won!`); // can remove later
                 restartBtn.style.display = "block";
                 gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                 gameDisplay.style.backgroundColor = "gold";
@@ -164,7 +163,7 @@ function GameController(
             }
 
             if (isTie) {
-                console.log(`It's a tie!`);
+                console.log(`It's a tie!`); // can remove later
                 restartBtn.style.display = "block";
                 gameDisplay.textContent = `It's a tie!`;
                 gameDisplay.style.backgroundColor = "gray";
@@ -223,6 +222,7 @@ function DisplayGame() {
             cell.addEventListener("click", () => {
                 if (cell.textContent === "" && gameIsActive) {
                     cell.textContent = game.getActivePlayer().token;
+                    cell.style.color = game.getActivePlayer().color;
                     game.playRound(rowIndex,columnIndex);
                 }
             })
