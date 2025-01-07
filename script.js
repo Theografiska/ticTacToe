@@ -46,7 +46,7 @@ function Cell() {
 
     // accept a player's input:
     const getChoice = (player) => {
-        value = player; // getActivePlayer().token goes here
+        value = player; // getActivePlayer().symbol goes here
     };
 
     // retrieve the value through closure
@@ -58,9 +58,9 @@ function Cell() {
     }
 }
 
-function Player(name, token, color) {
+function Player(name, symbol, color) {
     this.name = name;
-    this.token = token;
+    this.symbol = symbol;
     this.color = color;
 }
 
@@ -112,7 +112,7 @@ function GameController(
 
         const playRound = (rowIndex, columnIndex) => {
             console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`); // can remove later
-            board.makeChoice(rowIndex, columnIndex, getActivePlayer().token);
+            board.makeChoice(rowIndex, columnIndex, getActivePlayer().symbol);
 
             // victory function (to be used multiple times)
             const victoryMessage = () => {
@@ -134,17 +134,17 @@ function GameController(
             // checking winner
             for (i = 0; i <= 2; i++) {
                 // logic to check whether a player has taken some row
-                if (board.getBoard()[i][0].getValue() === getActivePlayer().token && board.getBoard()[i][1].getValue() === getActivePlayer().token && board.getBoard()[i][2].getValue() === getActivePlayer().token) {
+                if (board.getBoard()[i][0].getValue() === getActivePlayer().symbol && board.getBoard()[i][1].getValue() === getActivePlayer().symbol && board.getBoard()[i][2].getValue() === getActivePlayer().symbol) {
                     victoryMessage();
                     return; // return important otherwise it will check if it's a tie
                 } 
                 // logic to check whether a player has taken some column
-                else if (board.getBoard()[0][i].getValue() === getActivePlayer().token && board.getBoard()[1][i].getValue() === getActivePlayer().token && board.getBoard()[2][i].getValue() === getActivePlayer().token) {
+                else if (board.getBoard()[0][i].getValue() === getActivePlayer().symbol && board.getBoard()[1][i].getValue() === getActivePlayer().symbol && board.getBoard()[2][i].getValue() === getActivePlayer().symbol) {
                     victoryMessage();
                     return;
                 } 
                 // logic to check whether a player has taken some diagonal
-                else if (board.getBoard()[0][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[2][2].getValue() === getActivePlayer().token || board.getBoard()[2][0].getValue() === getActivePlayer().token && board.getBoard()[1][1].getValue() === getActivePlayer().token && board.getBoard()[0][2].getValue() === getActivePlayer().token) {
+                else if (board.getBoard()[0][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[2][2].getValue() === getActivePlayer().symbol || board.getBoard()[2][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[0][2].getValue() === getActivePlayer().symbol) {
                     victoryMessage();
                     return;
                 }
@@ -221,7 +221,7 @@ function DisplayGame() {
             cell.textContent = board.getBoard()[rowIndex][columnIndex].getValue();
             cell.addEventListener("click", () => {
                 if (cell.textContent === "" && gameIsActive) {
-                    cell.textContent = game.getActivePlayer().token;
+                    cell.textContent = game.getActivePlayer().symbol;
                     cell.style.color = game.getActivePlayer().color;
                     game.playRound(rowIndex,columnIndex);
                 }
