@@ -1,3 +1,4 @@
+/* overall settings */ 
 * {
     box-sizing: border-box;
     padding: 0;
@@ -18,13 +19,6 @@ body {
     align-items: center;
 }
 
-
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 header {
     height: 8rem;
     width: 100vw;
@@ -36,6 +30,15 @@ header {
     position: relative;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 60vh;
+}
+
+/* buttons */
 button {
     cursor: pointer;
     background-color: gold;
@@ -61,15 +64,12 @@ button {
     padding: 1rem;
 }
 
+/* general game area and other elements */
 #game-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
-}
-
-p {
-
 }
 
 .player {
@@ -98,6 +98,7 @@ p {
     background-color: lightcoral;
 }
 
+/* screen saying who's turn is it etc */
 #game-display {
     text-align: center;
     border: none;
@@ -115,6 +116,7 @@ p {
     display: none;
 }
 
+/* actual tic-tac-toe container */
 #tictactoe-container {
     background-color: white;
     border-radius: 1rem;
@@ -148,16 +150,7 @@ p {
     cursor: pointer;
 }
 
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    width: 100vw;
-    color: white;
-    padding: 1rem;
-}
-
+/* dialog and form items */
 #dialog-container {
     display: flex;
     flex-direction: column;
@@ -173,10 +166,13 @@ footer {
 }
 
 #close-btn {
-    background-color: black;
-    color: white;
+    background: none;
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
     position: absolute;
-    right: 1rem;
+    right: .5rem;
+    top: .5rem;
 }
 
 #confirm-btn {
@@ -189,6 +185,8 @@ dialog {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border: solid 2px black;
+    border-radius: 1rem;
 }
 
 .form-button {
@@ -198,6 +196,7 @@ dialog {
 form input {
     padding: .25rem;
     border-radius: .25rem;
+    border: 1px solid lightgray;
 }
 
 .form-row {
@@ -218,3 +217,14 @@ form input {
     );
     opacity: 0.75;
   }
+
+
+  footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    width: 100vw;
+    color: white;
+    padding: 1rem;
+}

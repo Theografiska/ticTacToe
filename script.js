@@ -35,7 +35,6 @@ function GameBoard() {
                 return cell.getValue();
             });
         });
-        console.log(boardWithCellValues); // can remove later
     }
 
     return { getBoard, makeChoice, printBoard, resetBoard };
@@ -46,7 +45,7 @@ function Cell() {
 
     // accept a player's input:
     const getChoice = (player) => {
-        value = player; // getActivePlayer().symbol goes here
+        value = player; 
     };
 
     // retrieve the value through closure
@@ -68,6 +67,7 @@ function GameController(
     playerOneName,
     playerTwoName
 ) {
+        let gameIsActive = false;
         const board = GameBoard();
 
         const players = [
@@ -93,7 +93,6 @@ function GameController(
             gameIsActive = true;
             gameDisplay.textContent = `${getActivePlayer().name}'s turn.`;
             gameDisplay.style.backgroundColor = getActivePlayer().color;
-            console.log(`${getActivePlayer().name}'s turn.`); // can remove later
         };
 
         const playerOneScoreElement = document.querySelector("#player-one-score");
@@ -114,12 +113,10 @@ function GameController(
         })
 
         const playRound = (rowIndex, columnIndex) => {
-            console.log(`${getActivePlayer().name}'s choice was ${rowIndex +1}. row and ${columnIndex +1}. column...`); // can remove later
             board.makeChoice(rowIndex, columnIndex, getActivePlayer().symbol);
 
             // victory function (to be used multiple times)
             const victoryMessage = () => {
-                console.log(`Congratz, ${getActivePlayer().name}, you have won!`); // can remove later
                 restartBtn.style.display = "block";
                 gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
                 gameDisplay.style.backgroundColor = "black";
@@ -166,11 +163,9 @@ function GameController(
             }
 
             if (isTie) {
-                console.log(`It's a tie!`); // can remove later
                 restartBtn.style.display = "block";
                 gameDisplay.textContent = `It's a tie!`;
                 gameDisplay.style.backgroundColor = "gray";
-                gameDisplay.style.color = "white";
                 gameIsActive = false;
                 return;
             }
@@ -195,14 +190,13 @@ function GameController(
                     dialog.close();
                 });
         
-                // Prevent the "confirm" button from the default behavior of submitting the form, 
-                // and close the dialog with the `close()` method, which triggers the "close" event.
+                // Prevent the "confirm" button from the default behavior of submitting the form 
                 const confirmBtn = document.querySelector("#confirm-btn");
                 confirmBtn.addEventListener("click", (event) => {
                     startBtn.style.display = "none";
 
                     const hiddenItems = document.querySelectorAll(".hidden");
-                        hiddenItems.forEach((item) => {
+                    hiddenItems.forEach((item) => {
                         item.style.display = "block";
                     })
 
@@ -223,18 +217,13 @@ function GameController(
             });
         
             // rendering players' names
-            let firstName = document.querySelector("#player-one-name");
-            firstName.textContent = playerOneName + ": X";
+            let firstNameElement = document.querySelector("#player-one-name");
+            firstNameElement.textContent = playerOneName + ": X";
         
-            let secondName = document.querySelector("#player-two-name");
-            secondName.textContent = playerTwoName + ": O";
-        
-            const board = GameBoard();
-        
+            let secondNameElement = document.querySelector("#player-two-name");
+            secondNameElement.textContent = playerTwoName + ": O";
+                
             const RenderBoard = () => {
-                const board = GameBoard();
-        
-                // adding listeners to the cells
                 const allCells = document.querySelectorAll(".cell");
                 allCells.forEach((cell) => {
                     let cellId = cell.id;
@@ -264,7 +253,7 @@ function GameController(
         };
 }
 
-let gameIsActive = false;
+// let gameIsActive = false;
 
 // default names, these will be updated in the dialog modal. 
 let playerOneName = "Player 1";
