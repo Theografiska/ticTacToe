@@ -148,26 +148,47 @@ footer {
     padding: 1rem;
 }
 
-dialog {
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-/* 
 #dialog-container {
     display: flex;
-    justify-content: center;   
-    align-items: center;      
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-} 
-*/
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#dialog-container button {
+    font-size: .8rem;
+    padding: .4rem .8rem;
+}
+
+#close-btn {
+    background-color: black;
+    color: white;
+}
+
+#confirm-btn {
+
+}
+
+dialog {
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-button {
+    margin: 1rem 0;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem .5rem;
+    margin: 0rem 1rem;
+    gap: 1rem;
+}
+
 
 ::backdrop {
     background-image: linear-gradient(

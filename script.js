@@ -122,8 +122,8 @@ function GameController(
                 console.log(`Congratz, ${getActivePlayer().name}, you have won!`); // can remove later
                 restartBtn.style.display = "block";
                 gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
-                gameDisplay.style.backgroundColor = "gold";
-                gameDisplay.style.color = "black";
+                gameDisplay.style.backgroundColor = "black";
+                gameDisplay.style.color = "white";
                 gameIsActive = false;
                 if (getActivePlayer().name === players[0].name) {
                     playerOneScore ++;
@@ -197,7 +197,7 @@ function GameController(
         
                 // Prevent the "confirm" button from the default behavior of submitting the form, 
                 // and close the dialog with the `close()` method, which triggers the "close" event.
-                const confirmBtn = document.querySelector("#confirmBtn");
+                const confirmBtn = document.querySelector("#confirm-btn");
                 confirmBtn.addEventListener("click", (event) => {
                     startBtn.style.display = "none";
 
