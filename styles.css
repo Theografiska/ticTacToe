@@ -69,14 +69,17 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .name {
     font-size: 1.25rem;
     color: white;
-    padding: 1rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 1rem;
     margin-bottom: 2rem;
+    display: flex;
 }
 
 #player-one-name {

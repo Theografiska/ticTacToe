@@ -189,9 +189,14 @@ function GameController(
 }
 
 function DisplayGame() {
-    // start button kicks off the game
+    // start button kicks off the game and asks for names
+
     const startBtn = document.querySelector("#start-btn");
     startBtn.addEventListener("click", () => {
+        // opening up the dialogue: 
+        
+        GameController(playerOneName = prompt("First player name", "Player 1"), playerTwoName = prompt("Second player name", "Player 2"));
+
         game.printNewRound();
         startBtn.style.display = "none";
         const hiddenItems = document.querySelectorAll(".hidden");
@@ -236,4 +241,7 @@ let playerTwoScore = 0;
 
 let gameIsActive = false;
 
-const game = GameController(playerOneName = prompt("First player name", "Player 1"), playerTwoName = prompt("Second player name", "Player 2"));
+let playerOneName = "Player 1";
+let playerTwoName = "Player 2";
+
+const game = GameController(playerOneName, playerTwoName);
