@@ -147,3 +147,35 @@ footer {
     color: white;
     padding: 1rem;
 }
+
+dialog {
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+/* 
+#dialog-container {
+    display: flex;
+    justify-content: center;   
+    align-items: center;      
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+} 
+*/
+
+::backdrop {
+    background-image: linear-gradient(
+      45deg,
+      magenta,
+      rebeccapurple,
+      dodgerblue,
+      green
+    );
+    opacity: 0.75;
+  }

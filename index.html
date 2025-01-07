@@ -9,7 +9,7 @@
 <body>
     <header>
         <h1>Tic-Tac-Toe</h1>
-        <button id="restart-btn">Restart game</button>        
+        <button id="restart-btn">New round!</button>        
     </header>
     <main>
         <div id="game-container">
@@ -42,7 +42,24 @@
         
         <div class="hidden" id="game-display">
         </div>
-        <button id="start-btn">Start game</button>
+        <div id="dialog-container">
+            <dialog>
+                <button id="close-btn" autofocus>Close</button>
+                <form>
+                    <div>
+                        <label for="first-player-input">First player's name: </label>
+                        <input id="first-player-input" name="first-player-input" value="Player 1" type="text">
+                    </div>
+                    <div>
+                        <label for="second-player-input">Second player's name: </label>
+                        <input id="second-player-input" name="second-player-input" value="Player 2" type="text">
+                    </div>
+                    <button id="confirmBtn" value="default">Confirm</button>
+                </form>
+            </dialog>
+        </div>
+        
+        <button id="start-btn">Choose names & start</button>
     </main>
     <footer>
         <p>Theodor Kaljo 2025</p>
