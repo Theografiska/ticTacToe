@@ -35,6 +35,7 @@ function GameBoard() {
                 return cell.getValue();
             });
         });
+        console.log(boardWithCellValues); // can remove later
     }
 
     return { getBoard, makeChoice, printBoard, resetBoard };
