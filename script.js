@@ -115,15 +115,15 @@ function GameController(
     })
 
     const playRound = (rowIndex, columnIndex) => {
-        board.makeChoice(rowIndex, columnIndex, getActivePlayer().symbol);
+        board.makeChoice(rowIndex, columnIndex, activePlayer.symbol);
 
         // victory function 
         const victoryMessage = () => {
             restartBtn.style.display = "block";
-            gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
+            gameDisplay.textContent = `Congratz, ${activePlayer.name}, you have won!`;
             gameDisplay.style.backgroundColor = "black";
             gameIsActive = false;
-            if (getActivePlayer().name === players[0].name) {
+            if (activePlayer.name === players[0].name) {
                 playerOneScore ++;
                 playerOneScoreElement.textContent = `Total score: ${playerOneScore}`;
             } else {
@@ -135,17 +135,17 @@ function GameController(
         // checking winner
         for (i = 0; i <= 2; i++) {
             // logic to check whether a player has taken some row
-            if (board.getBoard()[i][0].getValue() === getActivePlayer().symbol && board.getBoard()[i][1].getValue() === getActivePlayer().symbol && board.getBoard()[i][2].getValue() === getActivePlayer().symbol) {
+            if (board.getBoard()[i][0].getValue() === getActivePlayer().symbol && board.getBoard()[i][1].getValue() === getActivePlayer().symbol && board.getBoard()[i][2].getValue() === getActivePlayer().symbol && gameIsActive) {
                 victoryMessage();
                 return; // return important otherwise it will check if it's a tie
             } 
             // logic to check whether a player has taken some column
-            else if (board.getBoard()[0][i].getValue() === getActivePlayer().symbol && board.getBoard()[1][i].getValue() === getActivePlayer().symbol && board.getBoard()[2][i].getValue() === getActivePlayer().symbol) {
+            else if (board.getBoard()[0][i].getValue() === getActivePlayer().symbol && board.getBoard()[1][i].getValue() === getActivePlayer().symbol && board.getBoard()[2][i].getValue() === getActivePlayer().symbol && gameIsActive) {
                 victoryMessage();
                 return;
             } 
             // logic to check whether a player has taken some diagonal
-            else if (board.getBoard()[0][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[2][2].getValue() === getActivePlayer().symbol || board.getBoard()[2][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[0][2].getValue() === getActivePlayer().symbol) {
+            else if (board.getBoard()[0][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[2][2].getValue() === getActivePlayer().symbol && gameIsActive || board.getBoard()[2][0].getValue() === getActivePlayer().symbol && board.getBoard()[1][1].getValue() === getActivePlayer().symbol && board.getBoard()[0][2].getValue() === getActivePlayer().symbol && gameIsActive) {
                 victoryMessage();
                 return;
             }
@@ -171,9 +171,12 @@ function GameController(
             return;
         }
 
-        if (gameIsActive) {
+        if(gameIsActive === true) {
             switchPlayerTurn();
             printNewRound();
+        } else { // this might not be needed, but here for troubleshooting purposes
+            restartBtn.style.display = "block";
+            gameIsActive = false;
         }
     };
 
@@ -191,7 +194,6 @@ function GameController(
                 dialog.close();
             });
         
-            // Prevent the "confirm" button from the default behavior of submitting the form 
             const confirmBtn = document.querySelector("#confirm-btn");
             confirmBtn.addEventListener("click", (event) => {
                 // hiding the start button
@@ -214,8 +216,8 @@ function GameController(
                 // starting a game with correct names
                 GameController(firstPlayerInput, secondPlayerInput);
                 printNewRound();
-        
-                event.preventDefault(); // don't want to submit the form
+                // Prevent the "confirm" button from the default behavior of submitting the form 
+                event.preventDefault(); 
                 dialog.close();
             });
         });
@@ -232,6 +234,8 @@ function GameController(
                         cell.textContent = activePlayer.symbol;
                         cell.style.color = activePlayer.color;
                         game.playRound(rowIndex,columnIndex);
+                    } else {
+                        console.log("Error message");
                     }
                 })
             })
