@@ -68,11 +68,18 @@ function GameController(
     playerOneName,
     playerTwoName
 ) {
+    let gameIsActive = false;
+
     const gameDisplay = document.querySelector("#game-display");
     const playerOneScoreElement = document.querySelector("#player-one-score");
     const playerTwoScoreElement = document.querySelector("#player-two-score");
 
-    let gameIsActive = false;
+    let firstNameElement = document.querySelector("#player-one-name");
+    let secondNameElement = document.querySelector("#player-two-name");
+
+    firstNameElement.textContent = `${playerOneName}: X`; 
+    secondNameElement.textContent = `${playerTwoName}: O`;
+
     let playerOneScore = 0;
     let playerTwoScore = 0;
 
@@ -120,7 +127,6 @@ function GameController(
             restartBtn.style.display = "block";
             gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
             gameDisplay.style.backgroundColor = "black";
-            gameDisplay.style.color = "white";
             gameIsActive = false;
             if (getActivePlayer().name === players[0].name) {
                 playerOneScore ++;
@@ -216,13 +222,6 @@ function GameController(
                 dialog.close();
             });
         });
-        
-        // rendering players' names
-        let firstNameElement = document.querySelector("#player-one-name");
-        firstNameElement.textContent = playerOneName + ": X";
-    
-        let secondNameElement = document.querySelector("#player-two-name");
-        secondNameElement.textContent = playerTwoName + ": O";
             
         const RenderBoard = () => {
             const allCells = document.querySelectorAll(".cell");
