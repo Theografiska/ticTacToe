@@ -104,8 +104,8 @@ function GameController(
     const printNewRound = () => {
         gameIsActive = true;
         board.printBoard();
-        gameDisplay.textContent = `${getActivePlayer().name}'s turn.`;
-        gameDisplay.style.backgroundColor = getActivePlayer().color;
+        gameDisplay.textContent = `${activePlayer.name}'s turn.`;
+        gameDisplay.style.backgroundColor = activePlayer.color;
     };
 
     // reset button functionality
@@ -122,7 +122,7 @@ function GameController(
     const playRound = (rowIndex, columnIndex) => {
         board.makeChoice(rowIndex, columnIndex, getActivePlayer().symbol);
 
-        // victory function (to be used multiple times)
+        // victory function 
         const victoryMessage = () => {
             restartBtn.style.display = "block";
             gameDisplay.textContent = `Congratz, ${getActivePlayer().name}, you have won!`;
