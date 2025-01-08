@@ -1,15 +1,6 @@
 function GameBoard() {
     const board = [];
 
-    for (let i = 0; i <= 2; i++) {
-        board[i] = [];
-        for (let j = 0; j <= 2; j++) {
-            board[i].push(Cell());
-        }
-    }
-
-    const getBoard = () => board;
-
     const resetBoard = () => {
         for (let i = 0; i <= 2; i++) {
             board[i] = [];
@@ -18,6 +9,10 @@ function GameBoard() {
             }
         }
     }
+
+    resetBoard();
+
+    const getBoard = () => board;
 
     const makeChoice = (rowIndex, columnIndex, player) => {
         let choice = board[rowIndex][columnIndex].getValue();
@@ -114,7 +109,7 @@ function GameController(
         board.resetBoard();
         board.getBoard();
         printNewRound();
-        DisplayGame();
+        displayGame();
         gameDisplay.style.color = "white";
         restartBtn.style.display = "none";
     })
@@ -182,7 +177,7 @@ function GameController(
         }
     };
 
-    function DisplayGame() {
+    function displayGame() {
         // start button kicks off the game and asks for names through modal dialog
         const startBtn = document.querySelector("#start-btn");
         startBtn.addEventListener("click", () => {        
@@ -199,8 +194,10 @@ function GameController(
             // Prevent the "confirm" button from the default behavior of submitting the form 
             const confirmBtn = document.querySelector("#confirm-btn");
             confirmBtn.addEventListener("click", (event) => {
+                // hiding the start button
                 startBtn.style.display = "none";
 
+                // bringing out the the display screen element
                 const hiddenItems = document.querySelectorAll(".hidden");
                 hiddenItems.forEach((item) => {
                     item.style.display = "block";
@@ -216,14 +213,14 @@ function GameController(
                 
                 // starting a game with correct names
                 GameController(firstPlayerInput, secondPlayerInput);
-                game.printNewRound();
+                printNewRound();
         
                 event.preventDefault(); // don't want to submit the form
                 dialog.close();
             });
         });
-            
-        const RenderBoard = () => {
+        
+        const renderBoard = () => {        
             const allCells = document.querySelectorAll(".cell");
             allCells.forEach((cell) => {
                 let cellId = cell.id;
@@ -232,24 +229,24 @@ function GameController(
                 cell.textContent = board.getBoard()[rowIndex][columnIndex].getValue();
                 cell.addEventListener("click", () => {
                     if (cell.textContent === "" && gameIsActive) {
-                        cell.textContent = game.getActivePlayer().symbol;
-                        cell.style.color = game.getActivePlayer().color;
+                        cell.textContent = activePlayer.symbol;
+                        cell.style.color = activePlayer.color;
                         game.playRound(rowIndex,columnIndex);
                     }
                 })
             })
         }
-        RenderBoard();
+        renderBoard();
     }
 
-    DisplayGame(); // initial game rendering to DOM
+    displayGame(); // initial game rendering to DOM
         
     return {
         playRound,
         getActivePlayer,
         switchPlayerTurn,
         printNewRound,
-        DisplayGame
+        displayGame
     };
 }
 
