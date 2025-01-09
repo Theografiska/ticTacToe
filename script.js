@@ -1,14 +1,5 @@
 function Gameboard() {
-    const rows = 3;
-    const columns = 3;
     const board = [];
-  
-    for (let i = 0; i < rows; i++) {
-      board[i] = [];
-      for (let j = 0; j < columns; j++) {
-        board[i].push(Cell());
-      }
-    }
 
     const resetBoard = () => {
         for (let i = 0; i <= 2; i++) {
@@ -26,7 +17,7 @@ function Gameboard() {
     const markCell = (rowIndex, columnIndex, playerSymbol) => {
         let playerChoice = board[rowIndex][columnIndex].getValue();
 
-        if (playerChoice === "") { // why can't I add gameIsActive here?
+        if (playerChoice === "") {
             board[rowIndex][columnIndex].addSymbol(playerSymbol); // only an empty cell can be filled
         } else {
             return; 
@@ -101,21 +92,18 @@ function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") 
     // reset button functionality
     const restartBtn = document.querySelector("#restart-btn");
     restartBtn.addEventListener("click", () => {
-        //clear the board
+        //clear the board (HTML cell elements)
         allCells.forEach((cell) => {
             cell.textContent = "";
         })
+         //clear the board (JS array)
         board.resetBoard();
-        board.getBoard();
         printNewRound();
         restartBtn.style.display = "none";
     }) 
   
     const playRound = (rowIndex, columnIndex) => {
-      board.markCell(rowIndex, columnIndex, getActivePlayer().symbol);
-  
-      /*  This is where we would check for a winner and handle that logic,
-          such as a win message. */
+        board.markCell(rowIndex, columnIndex, getActivePlayer().symbol);
 
         // victory function 
         const victoryMessage = () => {
@@ -198,29 +186,29 @@ function ScreenController() {
 
     const players = game.getPlayers();
 
-    // update player names through modal -- is it doable?
-    // opening up the dialog: 
-
+    // opening up the dialog to set real values for player names
     const dialog = document.querySelector("dialog");
     dialog.showModal();
 
-    // "Close" button closes the dialog
+    // close button to close the dialog
     const closeButton = document.querySelector("#close-btn");
     closeButton.addEventListener("click", () => {
         dialog.close();
     });
 
+    // submiting the dialog
     const confirmBtn = document.querySelector("#confirm-btn");
     confirmBtn.addEventListener("click", (event) => {
         // hiding the start button
         startBtn.style.display = "none";
 
-        // bringing out the the display screen element
+        // bringing out the the hidden elements incl. the display element
         const hiddenItems = document.querySelectorAll(".hidden");
         hiddenItems.forEach((item) => {
             item.style.display = "block";
         })
         
+        // keeping restart button hidden
         const restartBtn = document.querySelector("#restart-btn");
         restartBtn.style.display = "none";
 
@@ -249,6 +237,7 @@ function ScreenController() {
         gameDisplay.textContent = `${game.getActivePlayer().name}'s turn...`;
         gameDisplay.style.backgroundColor = game.getActivePlayer().color;
 
+        // preventing information sending event
         event.preventDefault(); 
         dialog.close();
     })
@@ -262,7 +251,7 @@ function ScreenController() {
         // get the newest version of the board and player turn
         const board = game.getBoard();
 
-        // Display player's turn
+        // display player's turn
         gameDisplay.textContent = `${game.getActivePlayer().name}'s turn...`;
 
         // render board squres
@@ -291,8 +280,6 @@ function ScreenController() {
     // initial render
     updateScreen();
 }
-
-let gameIsActive = false; 
 
 // start button functionality
 const startBtn = document.querySelector("#start-btn");
