@@ -14,11 +14,11 @@ function GameBoard() {
 
     const getBoard = () => board;
 
-    const makeChoice = (rowIndex, columnIndex, player) => {
-        let choice = board[rowIndex][columnIndex].getValue();
+    const markCell = (rowIndex, columnIndex, playerSymbol) => {
+        let playerChoice = board[rowIndex][columnIndex].getValue();
 
-        if (choice === "") { 
-            board[rowIndex][columnIndex].getChoice(player); // only an empty cell can be filled
+        if (playerChoice === "") { // why can't I add gameIsActive here?
+            board[rowIndex][columnIndex].getChosenCell(playerSymbol); // only an empty cell can be filled
         } else {
             return; 
         }
@@ -33,22 +33,22 @@ function GameBoard() {
         console.log(boardWithCellValues); // can remove later
     }
 
-    return { getBoard, makeChoice, printBoard, resetBoard };
+    return { getBoard, markCell, printBoard, resetBoard };
 };
 
 function Cell() {
     let value = "";
 
     // accept a player's input:
-    const getChoice = (player) => {
-        value = player; 
+    const getChosenCell = (playerSymbol) => {
+        value = playerSymbol; 
     };
 
     // retrieve the value through closure
     const getValue = () => value;
 
     return {
-        getChoice,
+        getChosenCell,
         getValue
     }
 }
@@ -115,7 +115,7 @@ function GameController(
     })
 
     const playRound = (rowIndex, columnIndex) => {
-        board.makeChoice(rowIndex, columnIndex, activePlayer.symbol);
+        board.markCell(rowIndex, columnIndex, activePlayer.symbol);
 
         // victory function 
         const victoryMessage = () => {
