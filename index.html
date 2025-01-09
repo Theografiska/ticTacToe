@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>Tic-Tac Toe</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +11,14 @@
 </head>
 <body>
     <header>
-        <h1>Tic-Tac-Toe</h1>
-        <button id="restart-btn">New round!</button>        
+        <h1>Tic Tac Toe</h1>
+        <button id="restart-btn" class="hidden">New round!</button>        
     </header>
     <main>
         <div id="game-container">
             <div class="player" id="player-one-container">
-                <p id="player-one-name" class="name"></p>
-                <p id="player-one-score" class="score-counter"></p>
+                <p id="player-one-name" class="name hidden"></p>
+                <p id="player-one-score" class="score-counter hidden"></p>
             </div>
             <div id="tictactoe-container">
                 <div class="row">
@@ -38,13 +38,11 @@
                 </div>
             </div>
             <div class="player" id="player-two-container">
-                <p id="player-two-name" class="name"></p>
-                <p id="player-two-score" class="score-counter"></p>
+                <p id="player-two-name" class="name hidden"></p>
+                <p id="player-two-score" class="score-counter hidden"></p>
             </div>
         </div>
-        
-        <div class="hidden" id="game-display">
-        </div>
+        <div class="hidden" id="game-display">Hello!</div>
             <dialog>
                 <div id="dialog-container">
                     <div>
@@ -53,18 +51,18 @@
                     <form>
                         <div class="form-row">
                             <label for="first-player-input">First player's name: </label>
-                            <input id="first-player-input" name="first-player-input" value="Player 1" type="text">
+                            <input id="first-player-input" name="first-player-input" value="Player 1" type="text" required>
                         </div>
                         <div class="form-row">
                             <label for="second-player-input">Second player's name: </label>
-                            <input id="second-player-input" name="second-player-input" value="Player 2" type="text">
+                            <input id="second-player-input" name="second-player-input" value="Player 2" type="text" required>
                         </div>
                     </form>
                     <button class="form-button" id="confirm-btn" value="default">Confirm</button>
                 </div>
             </dialog>
         
-        <button id="start-btn">Choose names & start</button>
+        <button id="start-btn">Start Game</button>
     </main>
     <footer>
         <p>Theodor Kaljo 2025</p>

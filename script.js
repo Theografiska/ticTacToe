@@ -1,5 +1,14 @@
-function GameBoard() {
+function Gameboard() {
+    const rows = 3;
+    const columns = 3;
     const board = [];
+  
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < columns; j++) {
+        board[i].push(Cell());
+      }
+    }
 
     const resetBoard = () => {
         for (let i = 0; i <= 2; i++) {
@@ -11,46 +20,39 @@ function GameBoard() {
     }
 
     resetBoard();
-
+  
     const getBoard = () => board;
-
+  
     const markCell = (rowIndex, columnIndex, playerSymbol) => {
         let playerChoice = board[rowIndex][columnIndex].getValue();
 
         if (playerChoice === "") { // why can't I add gameIsActive here?
-            board[rowIndex][columnIndex].getChosenCell(playerSymbol); // only an empty cell can be filled
+            board[rowIndex][columnIndex].addSymbol(playerSymbol); // only an empty cell can be filled
         } else {
             return; 
         }
     };
-
+  
     const printBoard = () => {
-        const boardWithCellValues = board.map((row) => {
-            return row.map((cell) => {
-                return cell.getValue();
-            });
-        });
-        console.log(boardWithCellValues); // can remove later
-    }
-
+      const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
+    };
+  
     return { getBoard, markCell, printBoard, resetBoard };
-};
-
+  }
+  
 function Cell() {
     let value = "";
-
-    // accept a player's input:
-    const getChosenCell = (playerSymbol) => {
-        value = playerSymbol; 
+  
+    const addSymbol = (player) => {
+      value = player;
     };
-
-    // retrieve the value through closure
+  
     const getValue = () => value;
-
+  
     return {
-        getChosenCell,
-        getValue
-    }
+      addSymbol,
+      getValue
+    };
 }
 
 function Player(name, symbol, color) {
@@ -58,64 +60,62 @@ function Player(name, symbol, color) {
     this.symbol = symbol;
     this.color = color;
 }
-
-function GameController(
-    playerOneName,
-    playerTwoName
-) {
-    let gameIsActive = false;
-
+  
+function GameController(playerOneName = "Player 1", playerTwoName = "Player 2") {
     const gameDisplay = document.querySelector("#game-display");
+    const allCells = document.querySelectorAll(".cell");
+
+    // first player score
     const playerOneScoreElement = document.querySelector("#player-one-score");
-    const playerTwoScoreElement = document.querySelector("#player-two-score");
-
-    let firstNameElement = document.querySelector("#player-one-name");
-    let secondNameElement = document.querySelector("#player-two-name");
-
-    firstNameElement.textContent = `${playerOneName}: X`; 
-    secondNameElement.textContent = `${playerTwoName}: O`;
-
     let playerOneScore = 0;
-    let playerTwoScore = 0;
-
     playerOneScoreElement.textContent = `Total score: ${playerOneScore}`;
+
+    // second player information
+    const playerTwoScoreElement = document.querySelector("#player-two-score");
+    let playerTwoScore = 0;
     playerTwoScoreElement.textContent = `Total score: ${playerTwoScore}`;
 
-    const board = GameBoard();
-
+    const board = Gameboard();
+  
     const players = [
         new Player(playerOneName, "X", "lightblue"),
         new Player(playerTwoName, "O", "lightcoral")
     ];
 
+    const getPlayers = () => players;
+  
     let activePlayer = players[0];
-
+  
     const switchPlayerTurn = () => {
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+      activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
-
     const getActivePlayer = () => activePlayer;
-
+  
     const printNewRound = () => {
-        gameIsActive = true;
-        board.printBoard();
-        gameDisplay.textContent = `${activePlayer.name}'s turn.`;
-        gameDisplay.style.backgroundColor = activePlayer.color;
+      gameIsActive = true;
+      board.printBoard();
+      gameDisplay.textContent = `${activePlayer.name}'s turn...`;
+      gameDisplay.style.backgroundColor = activePlayer.color;
     };
 
     // reset button functionality
     const restartBtn = document.querySelector("#restart-btn");
     restartBtn.addEventListener("click", () => {
+        //clear the board
+        allCells.forEach((cell) => {
+            cell.textContent = "";
+        })
         board.resetBoard();
         board.getBoard();
         printNewRound();
-        displayGame();
-        gameDisplay.style.color = "white";
         restartBtn.style.display = "none";
-    })
-
+    }) 
+  
     const playRound = (rowIndex, columnIndex) => {
-        board.markCell(rowIndex, columnIndex, activePlayer.symbol);
+      board.markCell(rowIndex, columnIndex, getActivePlayer().symbol);
+  
+      /*  This is where we would check for a winner and handle that logic,
+          such as a win message. */
 
         // victory function 
         const victoryMessage = () => {
@@ -170,101 +170,132 @@ function GameController(
             gameIsActive = false;
             return;
         }
-
-        if(gameIsActive === true) {
+        
+        if (!gameIsActive) {
+            return;
+        } else {
             switchPlayerTurn();
             printNewRound();
-        } else { // this might not be needed, but here for troubleshooting purposes
-            restartBtn.style.display = "block";
-            gameIsActive = false;
         }
     };
+  
+    printNewRound();
+  
+    return {
+      playRound,
+      getActivePlayer,
+      getBoard: board.getBoard,
+      getPlayers,
+      printNewRound
+    };
+  }
+  
+function ScreenController() {
+    const gameDisplay = document.querySelector("#game-display");
+    const allCells = document.querySelectorAll(".cell");
 
-    function displayGame() {
-        // start button kicks off the game and asks for names through modal dialog
-        const startBtn = document.querySelector("#start-btn");
-        startBtn.addEventListener("click", () => {        
-            // opening up the dialog: 
-            const dialog = document.querySelector("dialog");
-            dialog.showModal();
-    
-            // "Close" button closes the dialog
-            const closeButton = document.querySelector("#close-btn");
-            closeButton.addEventListener("click", () => {
-                dialog.close();
-            });
+    const game = GameController();
+
+    const players = game.getPlayers();
+
+    // update player names through modal -- is it doable?
+    // opening up the dialog: 
+
+    const dialog = document.querySelector("dialog");
+    dialog.showModal();
+
+    // "Close" button closes the dialog
+    const closeButton = document.querySelector("#close-btn");
+    closeButton.addEventListener("click", () => {
+        dialog.close();
+    });
+
+    const confirmBtn = document.querySelector("#confirm-btn");
+    confirmBtn.addEventListener("click", (event) => {
+        // hiding the start button
+        startBtn.style.display = "none";
+
+        // bringing out the the display screen element
+        const hiddenItems = document.querySelectorAll(".hidden");
+        hiddenItems.forEach((item) => {
+            item.style.display = "block";
+        })
         
-            const confirmBtn = document.querySelector("#confirm-btn");
-            confirmBtn.addEventListener("click", (event) => {
-                // hiding the start button
-                startBtn.style.display = "none";
+        const restartBtn = document.querySelector("#restart-btn");
+        restartBtn.style.display = "none";
 
-                // bringing out the the display screen element
-                const hiddenItems = document.querySelectorAll(".hidden");
-                hiddenItems.forEach((item) => {
-                    item.style.display = "block";
-                })
+        // capturing user imputs from dialog
+        const firstPlayerInput = document.querySelector("#first-player-input").value;
+        const secondPlayerInput = document.querySelector("#second-player-input").value;
+            
+        // updating names in the objects
+        players[0].name = firstPlayerInput;
+        players[1].name = secondPlayerInput;
 
-                // capturing user imputs from dialog
-                const firstPlayerInput = document.querySelector("#first-player-input").value;
-                const secondPlayerInput = document.querySelector("#second-player-input").value;
-                    
-                // updating names in the objects
-                players[0].name = firstPlayerInput;
-                players[1].name = secondPlayerInput;
-                
-                // starting a game with correct names
-                GameController(firstPlayerInput, secondPlayerInput);
-                printNewRound();
-                // Prevent the "confirm" button from the default behavior of submitting the form 
-                event.preventDefault(); 
-                dialog.close();
-            });
-        });
-        
-        const renderBoard = () => {        
-            const allCells = document.querySelectorAll(".cell");
-            allCells.forEach((cell) => {
-                let cellId = cell.id;
-                let rowIndex = Number(cellId.split("-")[0]);
-                let columnIndex = Number(cellId.split("-")[1]);
-                cell.textContent = board.getBoard()[rowIndex][columnIndex].getValue();
-                cell.addEventListener("click", () => {
-                    if (cell.textContent === "" && gameIsActive) {
-                        cell.textContent = activePlayer.symbol;
-                        cell.style.color = activePlayer.color;
-                        game.playRound(rowIndex,columnIndex);
-                    } else {
-                        console.log("Error message");
-                    }
-                })
-            })
-        }
-        renderBoard();
+        // first player information
+        const playerOneScoreElement = document.querySelector("#player-one-score");
+        let firstNameElement = document.querySelector("#player-one-name");
+        firstNameElement.textContent = `${players[0].name}: X`; 
+        let playerOneScore = 0;
+        playerOneScoreElement.textContent = `Total score: ${playerOneScore}`;
+
+        // second player information
+        const playerTwoScoreElement = document.querySelector("#player-two-score");
+        let secondNameElement = document.querySelector("#player-two-name");
+        secondNameElement.textContent = `${players[1].name}: O`;
+        let playerTwoScore = 0;
+        playerTwoScoreElement.textContent = `Total score: ${playerTwoScore}`;
+
+        gameDisplay.textContent = `${game.getActivePlayer().name}'s turn...`;
+        gameDisplay.style.backgroundColor = game.getActivePlayer().color;
+
+        event.preventDefault(); 
+        dialog.close();
+    })
+
+    const updateScreen = () => {
+        //clear the board
+        allCells.forEach((cell) => {
+            cell.textContent = "";
+        })
+
+        // get the newest version of the board and player turn
+        const board = game.getBoard();
+
+        // Display player's turn
+        gameDisplay.textContent = `${game.getActivePlayer().name}'s turn...`;
+
+        // render board squres
+        allCells.forEach((cell) => {
+            let cellId = cell.id;
+            let rowIndex = Number(cellId.split("-")[0]);
+            let columnIndex = Number(cellId.split("-")[1]);
+            cell.textContent = board[rowIndex][columnIndex].getValue();
+        })
     }
 
-    displayGame(); // initial game rendering to DOM
-        
-    return {
-        playRound,
-        getActivePlayer,
-        switchPlayerTurn,
-        printNewRound,
-        displayGame
-    };
+    // event listener for the board cells
+    allCells.forEach((cell) => {
+        cell.addEventListener("click", () => {
+            let cellId = cell.id;
+            let rowIndex = Number(cellId.split("-")[0]);
+            let columnIndex = Number(cellId.split("-")[1]);
+            if (cell.textContent === "" && gameIsActive) {
+                cell.textContent = game.getActivePlayer().symbol;
+                cell.style.color = game.getActivePlayer().color;
+                game.playRound(rowIndex,columnIndex);
+            }
+        })
+    })
+
+    // initial render
+    updateScreen();
 }
 
-let gameIsActive = false;
+let gameIsActive = false; 
 
-const players = [
-    new Player("Player 1", "X", "lightblue"),
-    new Player("Player 2", "O", "lightcoral")
-];
-
-/*
-// default names, these will be updated in the dialog modal. 
-let playerOneName = "Player 1";
-let playerTwoName = "Player 2";
-*/
-
-const game = GameController(players[0].name, players[1].name);
+// start button functionality
+const startBtn = document.querySelector("#start-btn");
+startBtn.addEventListener("click", () => {
+    ScreenController();
+})

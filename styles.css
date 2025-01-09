@@ -51,14 +51,12 @@ button {
 }
 
 #restart-btn {
-    display: none;
     position: absolute;
     top: 3rem;
     right: 5rem;
 }
 
 #start-btn {
-    display: block;
     font-weight: bold;
     box-shadow: var(--main-box-shadow);
     padding: 1rem;
@@ -91,14 +89,21 @@ button {
     box-shadow: var(--main-box-shadow);
 }
 
+
 #player-one-name {
     background-color: lightblue;
 }
 #player-two-name {
+
     background-color: lightcoral;
 }
 
 /* screen saying who's turn is it etc */
+
+.hidden {
+    display: none;
+}
+
 #game-display {
     text-align: center;
     border: none;
@@ -110,10 +115,6 @@ button {
     font-family: monospace;
     min-width: 375px;
     box-shadow: var(--main-box-shadow);
-}
-
-.hidden {
-    display: none;
 }
 
 /* actual tic-tac-toe container */
@@ -207,7 +208,6 @@ form input {
     gap: .5rem;
 }
 
-
 ::backdrop {
     background-image: linear-gradient(
       45deg,
@@ -219,7 +219,7 @@ form input {
   }
 
 
-  footer {
+footer {
     display: flex;
     justify-content: center;
     align-items: center;
