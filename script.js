@@ -256,8 +256,15 @@ function GameController(
 
 let gameIsActive = false;
 
+const players = [
+    new Player("Player 1", "X", "lightblue"),
+    new Player("Player 2", "O", "lightcoral")
+];
+
+/*
 // default names, these will be updated in the dialog modal. 
 let playerOneName = "Player 1";
 let playerTwoName = "Player 2";
+*/
 
-const game = GameController(playerOneName, playerTwoName);
+const game = GameController(players[0].name, players[1].name);
